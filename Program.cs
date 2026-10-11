@@ -36,3 +36,9 @@ Console.WriteLine($"Owners in the unit: {unit.Owners.Count}");
 Console.WriteLine($"Community: {community.Name}");
 Console.WriteLine($"City: {community.Address.City}");
 Console.WriteLine($"Units in the community: {community.Units.Count}");
+
+CommunityStatistics statistics = new CommunityStatistics();
+
+double loginPercentage = statistics.CalculateLoginPercentage(community);
+
+Console.WriteLine($"Login percentage: {loginPercentage}%");
