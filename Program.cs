@@ -21,6 +21,7 @@ Owner owner = new Owner();
 owner.Name = "Tony Stark";
 owner.Email = "tony.stark@example.com";
 owner.LastLoginDate = new DateTime(2026, 10, 9);
+
 unit.Owners.Add(owner);
 
 Owner secondOwner = new Owner();
@@ -28,6 +29,7 @@ Owner secondOwner = new Owner();
 secondOwner.Name = "Pepper Potts";
 secondOwner.Email = "pepper.potts@example.com";
 secondOwner.LastLoginDate = null;
+
 unit.Owners.Add(secondOwner);
 
 Owner thirdOwner = new Owner();
@@ -35,38 +37,85 @@ Owner thirdOwner = new Owner();
 thirdOwner.Name = "Bruce Banner";
 thirdOwner.Email = "bruce.banner@example.com";
 thirdOwner.LastLoginDate = new DateTime(2026, 10, 10);
+
 secondUnit.Owners.Add(thirdOwner);
 
 CommunityStatistics statistics = new CommunityStatistics();
 
-double loginPercentage = statistics.CalculateLoginPercentage(community);
+bool running = true;
 
+while (running)
+{
+    Console.WriteLine();
+    Console.WriteLine("=== STARK TOWER ===");
+    Console.WriteLine("1 - View community");
+    Console.WriteLine("2 - View owners");
+    Console.WriteLine("3 - View statistics");
+    Console.WriteLine("0 - Exit");
+    Console.WriteLine();
+    Console.Write("Choose an option: ");
 
-Console.WriteLine($"Community: {community.Name}");
-Console.WriteLine($"City: {community.Address.City}");
-Console.WriteLine($"Units in the community: {community.Units.Count}");
+    string option = Console.ReadLine() ?? string.Empty;
 
-Console.WriteLine();
+    Console.WriteLine();
 
-Console.WriteLine($"Unit: {unit.Name}");
-Console.WriteLine($"Owners in the unit: {unit.Owners.Count}");
-Console.WriteLine($"Owner: {owner.Name}");
-Console.WriteLine($"Email: {owner.Email}");
-Console.WriteLine($"Last login: {owner.LastLoginDate}");
+    switch (option)
+    {
+        case "1":
+            Console.WriteLine($"Community: {community.Name}");
+            Console.WriteLine($"Address: {community.Address.Number} {community.Address.Street}, {community.Address.City}");
+            Console.WriteLine($"Units: {community.Units.Count}");
+            break;
 
-Console.WriteLine();
+        case "2":
+            foreach (Unit currentUnit in community.Units)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Unit: {currentUnit.Name}");
+                Console.WriteLine($"Owners: {currentUnit.Owners.Count}");
 
-Console.WriteLine($"Owner: {secondOwner.Name}");
-Console.WriteLine($"Email: {secondOwner.Email}");
-Console.WriteLine("Last login: Never");
+                foreach (Owner currentOwner in currentUnit.Owners)
+                {
+                    Console.WriteLine($"Name: {currentOwner.Name}");
+                    Console.WriteLine($"Email: {currentOwner.Email}");
 
-Console.WriteLine();
+                    if (currentOwner.LastLoginDate != null)
+                    {
+                        Console.WriteLine($"Last login: {currentOwner.LastLoginDate:yyy-MM-dd}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Last login: Never");
+                    }
 
-Console.WriteLine($"Unit: {secondUnit.Name}");
-Console.WriteLine($"Owners in the unit: {secondUnit.Owners.Count}");
-Console.WriteLine($"Owner: {thirdOwner.Name}");
-Console.WriteLine($"Email: {thirdOwner.Email}");
-Console.WriteLine($"Last login: {thirdOwner.LastLoginDate}");
+                    Console.WriteLine();
 
+                }
+            }
 
-Console.WriteLine($"Login percentage: {loginPercentage:F2}%");
+            break;
+
+        case "3":
+            {
+
+            double percentage = statistics.CalculateLoginPercentage(community);
+
+            Console.WriteLine($"Total owners: {statistics.TotalOwners}");
+            Console.WriteLine($"Owners who have logged in: {statistics.LoggerdInOwners}");
+            Console.WriteLine($"Login percentage: {percentage:F2}%");
+
+            break;
+
+            }
+
+        case "0":
+            running = false;
+            Console.WriteLine("Goodbye!");
+            break;
+
+        default:
+            Console.WriteLine("Invalid option. Please choose 1, 2, 3, or 0.");
+            break;
+    }
+}
+

@@ -1,7 +1,10 @@
 public class CommunityStatistics
 {
+    public int TotalOwners { get; private set; }
+    public int LoggerdInOwners { get; private set; }
     public double CalculateLoginPercentage(Community community)
     {
+        
         int totalOwners = 0;
         int loggedInOwners = 0;
 
@@ -18,6 +21,9 @@ public class CommunityStatistics
             }
         }
 
+        TotalOwners = totalOwners;
+        LoggerdInOwners = loggedInOwners;
+
         if (totalOwners == 0)
         {
             return 0;
@@ -27,4 +33,5 @@ public class CommunityStatistics
 
         return loginPercentage;
     }
+
 }
