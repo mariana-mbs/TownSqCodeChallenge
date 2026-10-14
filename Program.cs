@@ -103,7 +103,7 @@ while (running)
                 LoginStatistics result = statistics.GetLoginStatistics(community);
 
                 Console.WriteLine($"Total owners: {result.TotalOwners}");
-                Console.WriteLine($"Unit ownershipd: {result.TotalOwnerships}");
+                Console.WriteLine($"Unit ownerships: {result.TotalOwnerships}");
                 Console.WriteLine($"Owners who have logged in: {result.LoggedInOwners}");
                 Console.WriteLine($"Login percentage: {result.Percentage:F2}%");
 
