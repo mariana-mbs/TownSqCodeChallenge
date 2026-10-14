@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace TownSqCodeChallenge.Tests;
+﻿namespace TownSqCodeChallenge.Tests;
 
 public class CommunityStatisticsTests
 {
@@ -136,4 +134,58 @@ public class CommunityStatisticsTests
 
     }
 
+    [Fact]
+    public void CalculateLoginPercentage_CountsOwnerOnce_WhenOwnerHasTwoUnits()
+    {
+        Community community = new Community();
+
+        Unit firstUnit = new Unit();
+        Unit secondUnit = new Unit();
+        community.Units.Add(firstUnit);
+        community.Units.Add(secondUnit);
+
+        Owner ownerWithTwoUnits = new Owner();
+        ownerWithTwoUnits.LastLoginDate = new DateTime(2026, 10, 9);
+        firstUnit.Owners.Add(ownerWithTwoUnits);
+        secondUnit.Owners.Add(ownerWithTwoUnits);
+
+        Owner otherOwner = new Owner();
+        otherOwner.LastLoginDate = null;
+        secondUnit.Owners.Add(otherOwner);
+
+        CommunityStatistics statistics = new CommunityStatistics();
+
+        double result = statistics.CalculateLoginPercentage(community);
+
+        Assert.Equal(50.0, result);
+    }
+
+    [Fact]
+    public void GetLoginStatistics_ReturnsDistinctOwnersAndOwnerships_WhenOwnerHasTwoUnits()
+    {
+        Community community = new Community();
+
+        Unit firstUnit = new Unit();
+        Unit secondUnit = new Unit();
+        community.Units.Add(firstUnit);
+        community.Units.Add(secondUnit);
+
+        Owner ownerWithTwoUnits = new Owner();
+        ownerWithTwoUnits.LastLoginDate = new DateTime(2026, 10, 9);
+        firstUnit.Owners.Add(ownerWithTwoUnits);
+        secondUnit.Owners.Add(ownerWithTwoUnits);
+
+        Owner otherOwner = new Owner();
+        otherOwner.LastLoginDate = null;
+        secondUnit.Owners.Add(otherOwner);
+
+        CommunityStatistics statistics = new CommunityStatistics();
+
+        LoginStatistics result = statistics.GetLoginStatistics(community);
+
+        Assert.Equal(2, result.TotalOwners);
+        Assert.Equal(3, result.TotalOwnerships);
+        Assert.Equal(1, result.LoggedInOwners);
+        
+    }
 } 

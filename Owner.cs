@@ -1,3 +1,5 @@
+namespace TownSqCodeChallenge;
+
 public class Owner
 {
     public string Name { get; set; } = string.Empty;

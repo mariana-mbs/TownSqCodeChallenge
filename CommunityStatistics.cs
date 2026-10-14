@@ -1,37 +1,36 @@
+namespace TownSqCodeChallenge;
+
 public class CommunityStatistics
 {
-    public int TotalOwners { get; private set; }
-    public int LoggerdInOwners { get; private set; }
-    public double CalculateLoginPercentage(Community community)
+    public LoginStatistics GetLoginStatistics(Community community)
     {
-        
-        int totalOwners = 0;
+        ArgumentNullException.ThrowIfNull(community);
+
+        HashSet<Owner> countedOwners = new HashSet<Owner>();
         int loggedInOwners = 0;
+        int totalOwnerships = 0;
 
         foreach (Unit unit in community.Units)
         {
             foreach (Owner owner in unit.Owners)
             {
-                totalOwners++;
+                totalOwnerships++;
 
-                if (owner.LastLoginDate != null)
+                bool isNewOwner = countedOwners.Add(owner);
+
+                if (isNewOwner && owner.LastLoginDate != null)
                 {
                     loggedInOwners++;
                 }
             }
         }
 
-        TotalOwners = totalOwners;
-        LoggerdInOwners = loggedInOwners;
+        return new LoginStatistics(countedOwners.Count,  loggedInOwners, totalOwnerships);
+    }
 
-        if (totalOwners == 0)
-        {
-            return 0;
-        }
-
-        double loginPercentage = (double)loggedInOwners / totalOwners * 100;
-
-        return loginPercentage;
+    public double CalculateLoginPercentage(Community community)
+    {
+        return GetLoginStatistics(community).Percentage;
     }
 
 }

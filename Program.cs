@@ -1,4 +1,6 @@
-﻿Community community = new Community();
+﻿using TownSqCodeChallenge;
+
+Community community = new Community();
 
 community.Name = "Stark Tower";
 
@@ -39,6 +41,7 @@ thirdOwner.Email = "bruce.banner@example.com";
 thirdOwner.LastLoginDate = new DateTime(2026, 10, 10);
 
 secondUnit.Owners.Add(thirdOwner);
+secondUnit.Owners.Add(secondOwner);
 
 CommunityStatistics statistics = new CommunityStatistics();
 
@@ -81,7 +84,7 @@ while (running)
 
                     if (currentOwner.LastLoginDate != null)
                     {
-                        Console.WriteLine($"Last login: {currentOwner.LastLoginDate:yyy-MM-dd}");
+                        Console.WriteLine($"Last login: {currentOwner.LastLoginDate:yyyy-MM-dd}");
                     }
                     else
                     {
@@ -97,15 +100,14 @@ while (running)
 
         case "3":
             {
+                LoginStatistics result = statistics.GetLoginStatistics(community);
 
-            double percentage = statistics.CalculateLoginPercentage(community);
+                Console.WriteLine($"Total owners: {result.TotalOwners}");
+                Console.WriteLine($"Unit ownershipd: {result.TotalOwnerships}");
+                Console.WriteLine($"Owners who have logged in: {result.LoggedInOwners}");
+                Console.WriteLine($"Login percentage: {result.Percentage:F2}%");
 
-            Console.WriteLine($"Total owners: {statistics.TotalOwners}");
-            Console.WriteLine($"Owners who have logged in: {statistics.LoggerdInOwners}");
-            Console.WriteLine($"Login percentage: {percentage:F2}%");
-
-            break;
-
+                break;
             }
 
         case "0":
@@ -118,4 +120,3 @@ while (running)
             break;
     }
 }
-
